@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-4 me-auto">
                 <img src="{% static 'profile2.png'%}" class="rounded-circle m-3" alt="..." style="width:100px;"/>
-                <p class="fw-bold m-3">Username</p>
+                <p class="fw-bold m-3">@{{request.user}}</p>
                 <input class="form-control border border-secondary" type="text" style="background-color:#86878a;" placeholder="Add job title">
             </div>
             <div class="col-md-3">

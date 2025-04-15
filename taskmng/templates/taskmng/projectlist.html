@@ -22,16 +22,23 @@
                             <div class="card-body" style="background-color:#b1b2b5">
                                 <p>{{project.description}}</p>
                             </div>
+                            <small>Created  {{project.created|timesince}}</small>
                         </div>
                     </div>
                     {%endfor%}
                 </div>
-                <div>
-                    <form method="POST" action="">
-                        {%csrf_token%}
-                        {{form.as_p}}
-                        <button type="submit">Add</button>
-                    </form>
+                <div class="container-fluid">
+                    <button class="btn dropdown-toggle" data-bs-toggle="collapse"  data-bs-target="#projectcreation" aria-controls="projectcreation" aria-expanded="true" type="button"> Add Projects</button>
+                    <div class="bg-secondary card" style="width:27rem" id="projectcreation">
+                        <form method="POST" action="" class="card-body">
+                            {%csrf_token%}
+                            <label for="projectname" class="form-label fw-bold">Project Name</label>
+                            <p class="fw-bold" id="projectname">{{form.project}}</p>
+                            <label for="description" class="form-label fw-bold">Project Description</label>
+                            <p class="" id="description">{{form.description}}</p>
+                            <button type="submit" class="btn btn-outline-info">Add</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <button class="btn bg-secondary fw-bold dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#updateFeed" aria-expanded="True" aria-controls="updateFeed">Update Feeds(Inbox)</button>

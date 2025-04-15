@@ -71,7 +71,7 @@ def homepage(request,project_id):
         form=TaskForm()   
     context={'project':project, 'form':form, 'tasks':tasks}
     return render(request, 'taskmng/home.html', context)
-
+@login_required
 def projectpage(request):
     projects=Project.objects.filter(user=request.user)
     form=ProjectForm()
@@ -88,12 +88,12 @@ def projectpage(request):
     context={'projects':projects, 'form':form}
     return render(request, 'taskmng/projectlist.html', context)
 
-
+@login_required
 def projects(request):
     projects=Project.objects.all()
     context={'projects':projects}
     return render(request, 'taskmng/sidebar.html',context)
-
+@login_required
 def toggle_list(request, task_id):
     project=Project.objects.all()
     task=Task.objects.get(pk=task_id)
@@ -102,7 +102,7 @@ def toggle_list(request, task_id):
     
     return redirect('home',project_id=project.id)
 
-
+@login_required
 def update_task(request, pk):
     project=Project.objects.all()
     tasks=Task.objects.get(id=pk)#get items from the database based on the prtmary key
@@ -117,6 +117,7 @@ def update_task(request, pk):
                 return redirect('projects')
     context={'form':form}
     return render(request, 'taskmng/home.html', context)
+@login_required
 def delete_task(request, pk):
     project=Project.objects.all()
     tasks=Task.objects.get(id=pk)
@@ -126,6 +127,6 @@ def delete_task(request, pk):
         return redirect('projects')
     return render(request,'taskmng/delete.html' , {"obj":tasks} )
     
-
+@login_required
 def profilepage(request):
     return render(request, 'taskmng/profile.html') 

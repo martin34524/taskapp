@@ -30,8 +30,7 @@
                     {% endif%}
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'profile' %}"><img src="{% static 'profile.png'%}" alt="profile" class="nav-link" style="width:45px; border-radius:50%"/></a>
-                    
+                    <a href="{% url 'profile' %}"><img src="{% static 'profile.png'%}" alt="profile" class="nav-link" style="width:45px; border-radius:50%"/>{{request.user}}</a>
                 </li>
             
             </ul>
