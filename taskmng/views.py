@@ -73,14 +73,14 @@ def homepage(request,project_id):
     return render(request, 'taskmng/home.html', context)
 
 def projectpage(request):
-    projects=Project.objects.filter(reporter=request.user)
+    projects=Project.objects.filter(user=request.user)
     form=ProjectForm()
     
     if request.method =='POST':
         form=ProjectForm(request.POST)
         if form.is_valid():
             form=form.save(commit=False)
-            form.reporter=request.user
+            form.user=request.user
         return redirect('projects')
     else:
         form=ProjectForm()
