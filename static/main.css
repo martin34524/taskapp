@@ -1,0 +1,33 @@
+.header-container {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background-color:#e6b157;
+    padding:0.5rem;
+    border-radius:10px 10px 10px 10px;
+
+}
+.logo-image {
+    margin-right:auto;
+}
+.right-container {
+    display:flex;
+    gap:1rem;
+    margin-left:auto;
+}
+.bell-image {
+    width:25px;
+    border-radius:50%;
+    
+}
+body{
+    background-color:#b1b2b5;
+}
+.question {
+    width:20px;
+    border-radius:50%;
+}
+.profile {
+    width:20px;
+    border-radius: 50%;
+}

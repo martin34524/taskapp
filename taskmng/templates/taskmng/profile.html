@@ -1,0 +1,34 @@
+{% extends 'main.html'%}
+{% load static %}
+{%block content%}
+<div class="container-fluid profile-tab">
+    <div>
+        <p class="fs-4 fw-bold rounded py-1" style="background-color:#86878a; text-align:center;">Profile</p>
+    </div>
+    <div class="row">
+        <div class="col-md-3 container rounded" style="background-color:#b1b2b5;">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a href="" class="nav-link m-2 fw-bold" aria-current="page" style="color:white;"><i class="fa-solid fa-user m-2"></i>Personal info</a>
+                </li>
+                <li class="nav-item">
+                    <a href=""class="nav-link m-2 fw-bold" style="color:white;"><i class="fa-solid fa-handshake m-2"></i>Work status</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link m-2 fw-bold" style="color:white;"><i class="fa-solid fa-language m-2"></i>Language and region</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link m-2 fw-bold" style="color:white;"><i class="fa-solid fa-lock m-2"></i>Password</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9 rounded" style="background-color:#86878a;">
+           {% include 'taskmng/profiletabs/profileinfo.html'%}
+           {% include 'taskmng/profiletabs/workstatus.html' %}
+           {% include 'taskmng/profiletabs/language_region.html' %}
+           {% include 'taskmng/profiletabs/password.html' %}
+        </div>
+    </div>
+</div>
+
+{% endblock%}

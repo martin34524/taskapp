@@ -1,0 +1,64 @@
+{% extends 'main.html'%}
+{% load static %}
+{% block content %}
+<div class="container-fluid task-side-container" >
+    <div class="container-fluid side-bar">
+       {% include 'taskmng/sidebar.html' %}
+       <button class="btn bg-success"><a href="{%url 'projects'%}">Add Project</a></button>
+    </div>
+    <div class=" container-fluid task-container">
+        <div class="container-sm">
+            <h2>{{project.project}}</h2>
+            <table class=" table table-dark table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Title</th>
+                        <th>Reporter</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>bug Id</th>
+                        <th>created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" {%if task.completed%}checked{% endif%} onclick="windows.location.href='{% url 'toggle_task' task.id%}'">
+                        </td>
+                        <td>{{ task.title}}</td>
+                        <td>{{task.reporter}}</td>
+                        <td>{{task.status}}</td>
+                        <td>{{task.priority}}</td>
+                        <td>{{task.bug_id}}</tb>
+                        <td>{{task.updated}}</td>
+                        <td><a href="{% url 'update' task.id%}">update</a></td>
+                        <td><a href="{% url 'delete' task.id%}">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <form method="post">
+                            {% csrf_token %}
+                            <td></td>
+                            <td>{{form.title}}</td>
+                            <td>{{form.reporter}}</td>
+                            <td>{{form.status}}</td>
+                            <td>{{form.priority}}</td>
+                            <td>{{form.bug_id}}</td>
+                            
+                            <td><button type="submit" class="btn btn-success">+Add task</button></td>
+        
+                        </form>
+                    </tr>
+                </tbody>
+        
+            </table>
+        
+        </div>
+        <hr/>
+        
+    </div>
+</div>  
+
+{% endblock %}

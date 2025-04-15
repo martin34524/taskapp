@@ -1,0 +1,47 @@
+{%extends 'main.html' %}
+{% block content %}
+<div>
+    <div class="row">
+        <div class="col-md-3 side-bar">
+            {% include 'taskmng/sidebar.html' %}
+            
+        </div>
+        <div class="rounded  col-md-9" style="background-color:#00e8fc";>
+            <div>
+            <button class="btn mt-2 bg-secondary fw-bold dropdown-toggle" data-bs-toggle="collapse" type="button" data-bs-target="#projectlist" aria-controls="projectlist"aria-expanded="True">Recent Projects</button>
+            </div>
+            <div class="mt-2 " id="projectlist">
+                <div class=" row container-fluid ">
+                    {% for project in projects %}
+                    <div class="col-md-3 rounded m-2">
+                        <div class="card" style="width:18rem; background-color:#e6b157">
+                            <h1 class="rounded fs-3">
+                                <i class="fa-solid fa-diagram-project"></i>
+                                <a class="card-link link-underline link-underline-opacity-0" href="{%url 'home' project.id%}" style="color:black">{{project.project}}</a>
+                            </h1>
+                            <div class="card-body" style="background-color:#b1b2b5">
+                                <p>{{project.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+                <div>
+                    <form method="POST" action="">
+                        {%csrf_token%}
+                        {{form.as_p}}
+                        <button type="submit">Add</button>
+                    </form>
+                </div>
+            </div>
+            <button class="btn bg-secondary fw-bold dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#updateFeed" aria-expanded="True" aria-controls="updateFeed">Update Feeds(Inbox)</button>
+            <div class="container rounded col-md-9" id="updateFeed" style="background-color:#2CBCBF">
+                <div class="container-flex row">
+                    <h1 class="fs-5 me-auto col-9">@{{request.user}}</h1>
+                    <div class="col-md-2">22hr                                                                  </div>
+                </div>
+            </div>
+        <div>
+    </div>
+<div>
+{% endblock%}

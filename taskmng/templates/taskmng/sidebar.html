@@ -1,0 +1,26 @@
+
+<div>
+    <a href="" class=" link-offset-2 link-underline link-underline-opacity-0" style="color:white;"><i class="fa-solid fa-house "></i>Home</a>
+</div>
+<div>
+    <a href= "" class="link-offset-2 link-underline link-underline-opacity-0" style="color:white;"><i class="fa-solid fa-tools "></i>Tools</a>
+</div>
+<div>
+    <a href="" class="link-offset-2 link-underline link-underline-opacity-0" style="color:white"><i class="fa-solid fa-grid"></i>Workspace</a>
+</div>
+
+<div class="container-fluid d-">
+    <div class="container-fluid d-flex">
+            
+            <div class="ms-auto">
+                <a href=""><i class="fa-solid fa-list" style="color:white;"></i></a>
+            </div>
+    </div>
+    {% comment %} <div class="collapse" id="projectlist">
+        <ul>
+            {% for project in projects%}
+            <li><a href="{%url 'home' project.id%}" style="color:white;">{{project.project}}</a></li>
+            {%endfor%}
+        </ul>
+    </div> {% endcomment %}
+</div>

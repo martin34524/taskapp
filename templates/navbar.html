@@ -1,0 +1,40 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg" style="background-color:#e6b157">
+    <div class=" container-fluid">
+        <a class="navbar-brand  " href="{% url 'projects'%}"><img src="{% static 'martin3.png'%}" style="width:70px; border-radius:20px 20px 20px 20px;" alt="logo"/></a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarnav" aria-controls="navbarnav" aria-expanded="false" aria-label="toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarnav">
+           
+            <form class="ms-auto" role="search">
+                <input class="form-control me-2" placeholder="search" aria-label="search">
+
+            </form>
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                
+                <li class="nav-item">
+                    <div class="position-relative">
+                        <a href= ""><i class="fa-solid fa-bell fa-shake fa-2x " style="margin:5px; color:white;"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">3</span></a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href=""><i class=" fa-solid fa-question fa-2x" style="color:white; margin:5px;" ></i></a>
+                </li>
+                <li class="nav-item">
+                    {% if request.user.is_authenticated%}
+                    <button type="button" class="btn btn-outline-info btn-sm" style="margin:5px;"><a href="{%url 'logout'%}">LOGOUT</a></button>
+                    {% else %}
+                    <button type="button" class="btn btn-outline-info btn-sm" style="margin:5px"><a href="{% url 'login'%}">LOGIN</a></button>
+                    {% endif%}
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'profile' %}"><img src="{% static 'profile.png'%}" alt="profile" class="nav-link" style="width:45px; border-radius:50%"/></a>
+                    
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</nav>
