@@ -1,10 +1,8 @@
 from django.shortcuts import render,redirect
-from .models import Project,Task
-from .forms import ProjectForm, TaskForm
+from .models import Project,Task,User
+from .forms import ProjectForm, TaskForm,UserPasswordChangeForm,RegisterForm
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -39,10 +37,10 @@ def logoutpage(request):
     return redirect('login')
 
 def registerpage(request):
-    form=UserCreationForm()
+    form=RegisterForm()
     
     if request.method == 'POST':
-        form=UserCreationForm(request.POST)
+        form=RegisterForm(request.POST)
         
         if form.is_valid():
             user=form.save(commit=False)
@@ -55,7 +53,7 @@ def registerpage(request):
     return render(request, 'taskmng/login_regform.html', context)
         
 
-@login_required
+@login_required(login_url="login")
 def homepage(request,project_id):
     project=Project.objects.get(pk=project_id)
     tasks=project.tasks.all()
@@ -71,7 +69,7 @@ def homepage(request,project_id):
         form=TaskForm()   
     context={'project':project, 'form':form, 'tasks':tasks}
     return render(request, 'taskmng/home.html', context)
-@login_required
+@login_required(login_url="login")
 def projectpage(request):
     projects=Project.objects.filter(user=request.user)
     form=ProjectForm()
@@ -88,12 +86,12 @@ def projectpage(request):
     context={'projects':projects, 'form':form}
     return render(request, 'taskmng/projectlist.html', context)
 
-@login_required
+@login_required(login_url="login")
 def projects(request):
     projects=Project.objects.all()
     context={'projects':projects}
     return render(request, 'taskmng/sidebar.html',context)
-@login_required
+@login_required(login_url="login")
 def toggle_list(request, task_id):
     project=Project.objects.all()
     task=Task.objects.get(pk=task_id)
@@ -102,7 +100,7 @@ def toggle_list(request, task_id):
     
     return redirect('home',project_id=project.id)
 
-@login_required
+@login_required(login_url="login")
 def update_task(request, pk):
     project=Project.objects.all()
     tasks=Task.objects.get(id=pk)#get items from the database based on the prtmary key
@@ -117,7 +115,7 @@ def update_task(request, pk):
                 return redirect('projects')
     context={'form':form}
     return render(request, 'taskmng/home.html', context)
-@login_required
+@login_required(login_url="login")
 def delete_task(request, pk):
     project=Project.objects.all()
     tasks=Task.objects.get(id=pk)
@@ -127,6 +125,19 @@ def delete_task(request, pk):
         return redirect('projects')
     return render(request,'taskmng/delete.html' , {"obj":tasks} )
     
-@login_required
+@login_required(login_url="login")
 def profilepage(request):
     return render(request, 'taskmng/profile.html') 
+@login_required(login_url="login")
+def passwordchange(request):
+    if request.method == 'POST':
+        form=UserPasswordChangeForm(user=request.user ,data=request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('profile')
+    else:
+        form=UserPasswordChangeForm(user=request.user)
+        
+    
+    context={'form':form}
+    return render(request, 'taskmng/profiletabs/password.html', context)

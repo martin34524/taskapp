@@ -26,7 +26,9 @@
            {% include 'taskmng/profiletabs/profileinfo.html'%}
            {% include 'taskmng/profiletabs/workstatus.html' %}
            {% include 'taskmng/profiletabs/language_region.html' %}
-           {% include 'taskmng/profiletabs/password.html' %}
+           <div>
+                <button class="btn "><a href="{% url 'change-password' %}" class="link-underline link-underline-opacity-0 fw-bold" style="color:black;">Change Password</a></button>
+           </div>
         </div>
     </div>
 </div>

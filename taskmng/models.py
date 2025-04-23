@@ -1,8 +1,18 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 import uuid
 
-
+class User(AbstractUser):
+    username=models.CharField(max_length=100)
+    email=models.EmailField(unique=True)
+    mobile_number=models.CharField(max_length=13, blank=True, null=True,unique=True)
+    avatar=models.ImageField(null=True, default='taskmng/media/avatar-svgrepo-com.svg')
+    
+    USERNAME_FIELD='email'
+    REQUIRED_FIELDS=['username']
+    def __str__(self):
+        return self.email
+    
 
 class Priority(models.Model):
     name=models.CharField(max_length=50, null=True, blank=True)

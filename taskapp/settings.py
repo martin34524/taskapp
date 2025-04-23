@@ -71,6 +71,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'taskapp.wsgi.application'
 
+AUTH_USER_MODEL='taskmng.User'
+
+#where the user uploaded files will be stored
+MEDIA_ROOT= BASE_DIR/ 'static/taskmng/media'
+#url for the media files
+MEDIA_URL='/taskmng/media/'
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

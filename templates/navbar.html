@@ -24,14 +24,19 @@
                 </li>
                 <li class="nav-item">
                     {% if request.user.is_authenticated%}
-                    <button type="button" class="btn btn-outline-info btn-sm" style="margin:5px;"><a href="{%url 'logout'%}">LOGOUT</a></button>
+                    <button type="button" class="btn btn-sm" style="margin:5px; background-color:#f54715; "><a href="{%url 'logout'%}" class="link-underline link-underline-opacity-0 fw-bold" style="color:white;">LOGOUT</a></button>
                     {% else %}
-                    <button type="button" class="btn btn-outline-info btn-sm" style="margin:5px"><a href="{% url 'login'%}">LOGIN</a></button>
+                    <button type="button" class="btn btn-sm" style="margin:5px; background-color:#f54715;"><a href="{% url 'login'%}" class=" link-underline link-underline-opacity-0 fw-bold" style="color:white;">LOGIN</a></button>
                     {% endif%}
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'profile' %}"><img src="{% static 'profile.png'%}" alt="profile" class="nav-link" style="width:45px; border-radius:50%"/>{{request.user}}</a>
+                    <a href="{% url 'profile' %}"><img src="{% static 'profile.png'%}" alt="profile" class="nav-link" style="width:45px; border-radius:50%"/> </a>
                 </li>
+                {%if request.user.is_authenticated %}
+                <li class="mt-2">
+                    <p class="fw-bold">@{{request.user.username}}</p>
+                </li>
+                {% endif%}
             
             </ul>
         </div>
