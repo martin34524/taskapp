@@ -4,18 +4,23 @@
     <div class=" row-md-3 container-fluid border border-dark rounded">
         <div class="row">
             <div class="col-md-4 me-auto">
-                <img src="{% static 'profile2.png'%}" class="rounded-circle m-3" alt="..." style="width:100px;"/>
-                <p class="fw-bold m-3">@{{request.user}}</p>
+                {%if user.avatar%}
+                <img src="{{user.avatar.url}}" class="rounded-circle m-3" alt="..." style="width:100px;"/>
+                {% else%}
+                <img src="{% static '/taskmng/media/avatar-svgrepo-com.svg'%}" class="rounded-circle m-3" alt="{{user.username}}'s avatar" style="width:100px"/>
+                {%endif%}
+                <button class="btn bg-info " type="button"><a class="link-underline link-underline-opacity-0 fw-bold" style="color:black;" href="{% url 'profileupdate'%}">Edit Profile</a></button>
+                <p class="fw-bold m-3">@{{request.user.username}}</p>
                 <input class="form-control border border-secondary" type="text" style="background-color:#86878a;" placeholder="Add job title">
             </div>
             <div class="col-md-3">
                 <div class="mb-2">
                     <label for="email-form" class="form-label fw-bold " >Email</label>
-                    <input class="form-control border border-secondary" type="text" id="email-form" style="background-color:#86878a" placeholder="email@gmail.com">
+                    <p>{{request.user}}</p> 
                 </div>
                 <div class="mb-2">
                     <label for="phone-form" class="form-label fw-bold">Phone</label>
-                    <input class="form-control border border-secondary" type="number" id="phone-form" style="background-color:#86878a" placeholder="+254795000000">
+                    <p>{{request.user.mobile_number}}</p>
                 </div>
                 <div class="mb-3">
                     <label for="location-form" class="form-label fw-bold">Location</label>

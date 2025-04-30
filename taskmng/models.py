@@ -6,7 +6,7 @@ class User(AbstractUser):
     username=models.CharField(max_length=100)
     email=models.EmailField(unique=True)
     mobile_number=models.CharField(max_length=13, blank=True, null=True,unique=True)
-    avatar=models.ImageField(null=True, default='taskmng/media/avatar-svgrepo-com.svg')
+    avatar=models.ImageField(null=True, default=None, upload_to='avatars/')
     
     USERNAME_FIELD='email'
     REQUIRED_FIELDS=['username']

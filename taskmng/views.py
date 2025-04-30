@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Project,Task,User
-from .forms import ProjectForm, TaskForm,UserPasswordChangeForm,RegisterForm
+from .forms import ProjectForm, TaskForm,UserPasswordChangeForm,RegisterForm,Profileupdateform
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
@@ -127,7 +127,34 @@ def delete_task(request, pk):
     
 @login_required(login_url="login")
 def profilepage(request):
-    return render(request, 'taskmng/profile.html') 
+    user=request.user
+    form=Profileupdateform(instance=user)
+    return render(request, 'taskmng/profile.html',{'user':user,'form':form}) 
+
+def profileinfopage(request):
+    user=request.user
+    form=Profileupdateform(instance=user)
+
+    context={'user':user,'form':form}    
+    return render (request, 'taskmng/profiletabs/profileinfo.html', context)
+
+def profileupdate(request):
+    user=request.user
+    form=Profileupdateform(instance=user)
+    
+    if request.method == 'POST':
+        form=Profileupdateform(request.POST,request.FILES, instance=user)
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your Profile has been updated successfully')
+            return redirect('profile')
+        else:
+            form=Profileupdateform(instance=user)
+            messages.error(request, 'update failed')
+    
+    return render(request,'taskmng/profiletabs/profileupdate.html', {'form':form})
+
 @login_required(login_url="login")
 def passwordchange(request):
     if request.method == 'POST':

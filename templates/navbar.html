@@ -30,7 +30,11 @@
                     {% endif%}
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'profile' %}"><img src="{% static 'profile.png'%}" alt="profile" class="nav-link" style="width:45px; border-radius:50%"/> </a>
+                    {%if user.avatar%}
+                    <a href="{% url 'profile' %}"><img src="{{request.user.avatar.url}}" alt="profile" class="nav-link" style="width:45px; border-radius:50%"/> </a>
+                    {%else%}
+                    <a href="{% url 'profile' %}"><img src="{% static 'taskmng/media/avatar-svgrepo-com.svg' %}" alt="profile" class="nav-link" style="width:45px; border-radius:50%"/> </a>
+                    {%endif%}
                 </li>
                 {%if request.user.is_authenticated %}
                 <li class="mt-2">

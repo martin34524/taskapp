@@ -55,3 +55,26 @@ class UserPasswordChangeForm(PasswordChangeForm):
         'class':'form-control',
         'placeholder':'Confirm Password',
     }), label='Confirn Password')
+
+class Profileupdateform(forms.ModelForm):
+    class Meta:
+        model=User
+        fields=['username','email','mobile_number','avatar']
+        widgets={
+            'username':forms.TextInput(attrs={
+                'class':'form-control',
+                'placeholder':'username'
+            }),
+            'email':forms.EmailInput(attrs={
+                'class':'form-control',
+                'placeholder':'email'
+            }),
+            'mobile_number':forms.TextInput(attrs={
+                'class':'form-control',
+                'placeholder':'mobile-number'
+            }),
+            'avatar':forms.ClearableFileInput(attrs={
+                'class':'form-control-file'
+            })
+        }
+    
