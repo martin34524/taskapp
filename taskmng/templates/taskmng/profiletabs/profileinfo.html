@@ -10,6 +10,7 @@
                 <img src="{% static '/taskmng/media/avatar-svgrepo-com.svg'%}" class="rounded-circle m-3" alt="{{user.username}}'s avatar" style="width:100px"/>
                 {%endif%}
                 <button class="btn bg-info " type="button"><a class="link-underline link-underline-opacity-0 fw-bold" style="color:black;" href="{% url 'profileupdate'%}">Edit Profile</a></button>
+                
                 <p class="fw-bold m-3">@{{request.user.username}}</p>
                 <input class="form-control border border-secondary" type="text" style="background-color:#86878a;" placeholder="Add job title">
             </div>

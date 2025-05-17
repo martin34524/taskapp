@@ -27,7 +27,7 @@ class RegisterForm(UserCreationForm):
         fields=['username','mobile_number','email']
         
         widgets={
-            'username':forms.EmailInput(attrs={
+            'username':forms.TextInput(attrs={
                 'class':'form-control',
                 'placeholder':'Username'
             }),

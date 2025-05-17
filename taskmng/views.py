@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
-from .models import Project,Task,User
+from .models import Project,Task,User,Messages
 from .forms import ProjectForm, TaskForm,UserPasswordChangeForm,RegisterForm,Profileupdateform
 from django.contrib import messages
+from django.db.models import Q
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 
@@ -49,6 +50,8 @@ def registerpage(request):
             user.save()
             login(request, user)
             return redirect('projects')
+        else:
+            messages.error (request, form.errors)
     context={'form':form}
     return render(request, 'taskmng/login_regform.html', context)
         
@@ -66,7 +69,7 @@ def homepage(request,project_id):
             task.save()
         return redirect('home',project_id=project.id)
     else:
-        form=TaskForm()   
+        form=TaskForm()
     context={'project':project, 'form':form, 'tasks':tasks}
     return render(request, 'taskmng/home.html', context)
 @login_required(login_url="login")
@@ -74,15 +77,16 @@ def projectpage(request):
     projects=Project.objects.filter(user=request.user)
     form=ProjectForm()
     
-    if request.method =='POST':
+    if request.method == 'POST':
         form=ProjectForm(request.POST)
         if form.is_valid():
             form=form.save(commit=False)
             form.user=request.user
+            form.save()
         return redirect('projects')
     else:
         form=ProjectForm()
-    
+        
     context={'projects':projects, 'form':form}
     return render(request, 'taskmng/projectlist.html', context)
 
@@ -124,6 +128,13 @@ def delete_task(request, pk):
         tasks.delete()
         return redirect('projects')
     return render(request,'taskmng/delete.html' , {"obj":tasks} )
+
+def delete_project(request, pk):
+    projects=Project.objects.get(id=pk)
+    if request.method == 'POST':
+        projects.delete()
+        return redirect('projects')
+    return render(request, 'taskmng/delete.html', {"obj":projects})
     
 @login_required(login_url="login")
 def profilepage(request):
