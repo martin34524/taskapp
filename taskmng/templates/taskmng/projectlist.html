@@ -17,7 +17,7 @@
                         <div class="card" style="width:18rem; background-color:#e6b157">
                             <h1 class="rounded fs-3 container-fluid">
                                 <i class="fa-solid fa-diagram-project"></i>
-                                <a class="card-link link-underline link-underline-opacity-0 " href="{%url 'home' project.id%}" style="color:black">{{project.project}}</a>
+                                <a class="card-link link-underline link-underline-opacity-0 text-capitalize" href="{%url 'home' project.id%}" style="color:black">{{project.project}}</a>
                                 <button class="btn ms-auto"><a class="link-underline link-underline-opacity-0 fw-bold" style="color:white" href="{% url 'deleteproject' project.id%}">delete</a></button>
                             </h1>
                             <div class="card-body" style="background-color:#b1b2b5">
@@ -38,6 +38,8 @@
                             {{form.project}}
                             <label class="form-label fw-bold">Project Description</label>
                             {{form.description}}
+                            <label class="form-label fw-bold">Member</lable>
+                            {{form.member}}
                             <button type="submit" class="btn btn-outline-info">Add</button>
                         </form>
                     </div>

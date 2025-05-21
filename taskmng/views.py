@@ -1,10 +1,12 @@
-from django.shortcuts import render,redirect
-from .models import Project,Task,User,Messages
+from django.shortcuts import render,redirect,get_object_or_404
+from .models import Project,Task,User,Messages,Invitation,ProjectMember
 from .forms import ProjectForm, TaskForm,UserPasswordChangeForm,RegisterForm,Profileupdateform
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from .permissions import  project_admin_required
+from django.core.mail import send_mail
 
 
 
@@ -57,6 +59,7 @@ def registerpage(request):
         
 
 @login_required(login_url="login")
+@project_admin_required
 def homepage(request,project_id):
     project=Project.objects.get(pk=project_id)
     tasks=project.tasks.all()
@@ -68,7 +71,7 @@ def homepage(request,project_id):
             task.project=project
             task.save()
         return redirect('home',project_id=project.id)
-    else:
+    else:   
         form=TaskForm()
     context={'project':project, 'form':form, 'tasks':tasks}
     return render(request, 'taskmng/home.html', context)
@@ -80,9 +83,15 @@ def projectpage(request):
     if request.method == 'POST':
         form=ProjectForm(request.POST)
         if form.is_valid():
-            form=form.save(commit=False)
-            form.user=request.user
-            form.save()
+            project=form.save(commit=False)
+            project.user=request.user
+            project.save()
+            
+            ProjectMember.objects.create(
+                user=request.user,
+                project=project,
+                role='Admin'
+            )
         return redirect('projects')
     else:
         form=ProjectForm()
@@ -179,3 +188,38 @@ def passwordchange(request):
     
     context={'form':form}
     return render(request, 'taskmng/profiletabs/password.html', context)
+
+def send_invite(request, pk):
+    projects=get_object_or_404(Project, id=pk)
+    
+    if request.method =='POST':
+        email=request.POST.get('email')
+        recipient=get_object_or_404(User, email=email)
+        
+        Invitation.objects.create(
+            project=projects,
+            sender=request.user,
+            recipient=recipient
+            
+        )
+        if  not recipient:
+            messages.error(request, 'The user spcified is not avaiable')
+        send_mail(
+            subject='Invitation to a project',
+            message=f'Dear {recipient} , this is to invite you to the {projects} project.',
+            from_email='progmartins2@gmail.com',
+            recipient_list=[f'{recipient}']
+        )
+        
+def accept_invite(request, token):
+    invitation=get_object_or_404(Invitation , token=token)
+    
+    if invitation.status == 'pending':
+        ProjectMember.objects.create(
+            user=invitation.recipient,
+            project=invitation.project,
+            role='member'
+        )
+        invitation.status = 'accepted'
+        invitation.save()
+    return render(request, 'taskmng/home.html')
