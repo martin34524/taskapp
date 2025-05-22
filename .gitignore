@@ -1,0 +1,18 @@
+#ignore environment variable files
+.env
+
+#python cachefiles
+__pycache__/
+*.pyc
+
+
+
+#django migrations
+*/migrations/*.pyc
+*/migrations/*.py
+!*/migrations/__init__.py
+
+
+#os files
+.DS_Store
+Thumbs.db
