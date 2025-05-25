@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .permissions import  project_admin_required
 from django.core.mail import send_mail
-
+from django.conf import settings
 
 
 def loginpage(request):
@@ -189,27 +189,35 @@ def passwordchange(request):
     context={'form':form}
     return render(request, 'taskmng/profiletabs/password.html', context)
 
-def send_invite(request, pk):
-    projects=get_object_or_404(Project, id=pk)
+def send_invite(request,pk):
+    projects=Project.objects.get(id=pk)
+    
+    if not projects:
+        messages.error(request, "The specified project does not exist")
     
     if request.method =='POST':
         email=request.POST.get('email')
-        recipient=get_object_or_404(User, email=email)
         
+        try:
+            recipient=User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, "The user with that email does not exist")
+            return redirect('projects')
+            
         Invitation.objects.create(
             project=projects,
             sender=request.user,
             recipient=recipient
             
         )
-        if  not recipient:
-            messages.error(request, 'The user spcified is not avaiable')
-        send_mail(
-            subject='Invitation to a project',
-            message=f'Dear {recipient} , this is to invite you to the {projects} project.',
-            from_email='progmartins2@gmail.com',
-            recipient_list=[f'{recipient}']
-        )
+        
+        subject='Invitation to a project'
+        message=f'Dear {recipient} , this is to invite you to the {projects} project.'
+        recipient_list=[recipient.email]
+        
+        
+        send_mail(subject, message, 'progmartin2@gmail.com', recipient_list)
+        return redirect('projects')
         
 def accept_invite(request, token):
     invitation=get_object_or_404(Invitation , token=token)
@@ -222,4 +230,5 @@ def accept_invite(request, token):
         )
         invitation.status = 'accepted'
         invitation.save()
-    return render(request, 'taskmng/home.html')
+    context={'invitation':invitation}
+    return render(request, 'taskmng/projectlist.html', context)

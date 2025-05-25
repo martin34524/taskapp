@@ -6,7 +6,7 @@ from django.contrib.auth.forms import PasswordChangeForm,UserCreationForm,Authen
 class ProjectForm(forms.ModelForm):
     class Meta:
         model=Project
-        fields=['project','description','member']
+        fields=['projectname','description','member']
         
 class TaskForm(forms.ModelForm):
     class Meta:

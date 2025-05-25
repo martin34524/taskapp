@@ -9,7 +9,7 @@
     <div class=" container-fluid task-container">
         <div class="container-sm">
             <div class="container d-flex">
-                <h2 class="me-auto">{{project.project}}</h2>
+                <h2 class="me-auto">{{project.projectname}}</h2>
                 <button class="btn btn-outline-success fs-5 fw-bold" data-bs-toggle="modal" data-bs-target="#members">Members</button>
                 <div class="modal fade" id="members" data-bs-backdrop="static" aria-labelledby="memberlabel" aria-hidden='True'>
                     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
@@ -24,7 +24,7 @@
                                     <li class="list-group-item">{{ member.user.username }} ({{ member.role }})</li>
                                     {% endfor %}
                                 </ul>
-                                <form class="d-flex" method="POST" action="{% url 'send_invite' project.id %}">
+                                <form class="d-flex" method="POST" action="{% url 'send_invite' project.id      %}">
                                     {% csrf_token %}
                                     <input  class=" form-control" type="email" name="email" placeholder="Invite by email">
                                     <button class="btn" type="submit">Invite</button>

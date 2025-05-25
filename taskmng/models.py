@@ -27,7 +27,7 @@ class Status(models.Model):
         return self.name
     
 class Project(models.Model):
-    project=models.CharField(max_length=60)
+    projectname=models.CharField(max_length=60)
     user=models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     description=models.TextField( null=True, blank=True)
     member=models.ManyToManyField(User, through='ProjectMember',blank=True ,related_name='projects')
@@ -36,13 +36,13 @@ class Project(models.Model):
     
     
     def save(self, *args,**kwargs):
-        super(Project, self).save(*args, **kwargs)
         #automatically make creator an admin
-        if self.project:
-            self.project=self.project.title()
+        if self.projectname:
+            self.projectname=self.projectname.title()
+        super(Project, self).save(*args, **kwargs)
          
     def __str__(self):
-        return self.project
+        return self.projectname
     
 class Task(models.Model):
     title=models.CharField(max_length=50, null=True, blank=True)
@@ -56,12 +56,6 @@ class Task(models.Model):
     assignee=models.ForeignKey(User, on_delete=models.SET_NULL,null=True,blank=True, related_name='assigned_task')
     project=models.ForeignKey(Project,on_delete=models.CASCADE, related_name="tasks")
     
-    def save(self, *args, **kwargs):
-                
-        if self.project:
-            self.project=self.project.title()
-            
-        super(Task, self).save(*args, **kwargs)
             
     def __str__(self):
         return self.title

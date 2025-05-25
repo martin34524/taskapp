@@ -120,13 +120,19 @@ USE_I18N = True
 
 USE_TZ = True
 
-#email configuration
+# email configurat
+from dotenv import load_dotenv
+
+load_dotenv() 
+
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
-EMAIL_HOST_USER='progmartins2@gmail.com'
-EMAIL_HOST_PASSWORD='fqgu bmhf byjp raqg'
+# EMAIL_HOST_USER='progmartin2@gmail.com'
+# EMAIL_HOST_PASSWORD='kket ubzs cppb oews'
+EMAIL_HOST_USER=os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=os.getenv('EMAIL_HOST_PASSWORD')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

@@ -20,7 +20,7 @@ urlpatterns=[
     path('deleteproject/<str:pk>/', delete_project, name="deleteproject"),
     path('profile-update/', profileupdate, name="profileupdate"),
     
-    path('send_invite/<str:pk>/', send_invite, name="send_invite")
+    path('send_invite/<str:pk>/', send_invite, name="send_invite"),
     
     
 ]
