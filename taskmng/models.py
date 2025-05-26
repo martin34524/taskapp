@@ -90,8 +90,8 @@ class Invitation(models.Model):
     
 #create messages
 class Messages(models.Model):
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
-    task= models.ForeignKey(Task, on_delete=models.CASCADE)
+    sender=models.ForeignKey(User,related_name="sent_message" ,on_delete=models.CASCADE,null=True)
+    receiver= models.ForeignKey(User,related_name="received_message" ,on_delete=models.CASCADE, null=True)
     body=models.TextField()
     updated=models.DateTimeField(auto_now= True)
     created=models.DateTimeField(auto_now_add= True)

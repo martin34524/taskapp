@@ -79,6 +79,8 @@ def homepage(request,project_id):
 def projectpage(request):
     projects=Project.objects.filter(user=request.user)
     form=ProjectForm()
+    invitations=Invitation.objects.filter(recipient=request.user)
+    notifications=Messages.objects.filter(receiver=request.user)
     
     if request.method == 'POST':
         form=ProjectForm(request.POST)
@@ -96,7 +98,7 @@ def projectpage(request):
     else:
         form=ProjectForm()
         
-    context={'projects':projects, 'form':form}
+    context={'projects':projects, 'form':form, 'invitations':invitations, 'notifications':notifications}
     return render(request, 'taskmng/projectlist.html', context)
 
 @login_required(login_url="login")
@@ -144,6 +146,13 @@ def delete_project(request, pk):
         projects.delete()
         return redirect('projects')
     return render(request, 'taskmng/delete.html', {"obj":projects})
+
+def delete_messages(request, pk):
+    notifications=Messages.objects.get(id=pk)
+    if request.method == 'POST':
+        notifications.delete()
+        return redirect('projects')
+    return render(request, 'taskmng/delete.html',{"obj":notifications})
     
 @login_required(login_url="login")
 def profilepage(request):
@@ -210,17 +219,24 @@ def send_invite(request,pk):
             recipient=recipient
             
         )
-        
+       
         subject='Invitation to a project'
-        message=f'Dear {recipient} , this is to invite you to the {projects} project.'
+        message=f'Dear {recipient.username} , this is to invite you to the {projects} project.'
         recipient_list=[recipient.email]
         
         
         send_mail(subject, message, 'progmartin2@gmail.com', recipient_list)
+        Messages.objects.create(
+            sender=request.user,
+            receiver=recipient,
+            body=message
+            
+        )
+        
         return redirect('projects')
         
-def accept_invite(request, token):
-    invitation=get_object_or_404(Invitation , token=token)
+def accept_invite(request):
+    invitation=Invitation.objects.get(recipient=request.user)
     
     if invitation.status == 'pending':
         ProjectMember.objects.create(
@@ -230,5 +246,4 @@ def accept_invite(request, token):
         )
         invitation.status = 'accepted'
         invitation.save()
-    context={'invitation':invitation}
-    return render(request, 'taskmng/projectlist.html', context)
+        return redirect('projects')

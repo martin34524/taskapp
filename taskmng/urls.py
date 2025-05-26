@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import homepage,profilepage,projectpage, delete_project,toggle_list,update_task,delete_task,loginpage,registerpage,logoutpage,passwordchange,profileupdate,send_invite,accept_invite
+from .views import homepage,profilepage,projectpage, delete_project,toggle_list,update_task,delete_task,loginpage,registerpage,logoutpage,passwordchange,profileupdate,send_invite,accept_invite, delete_messages
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -21,6 +21,7 @@ urlpatterns=[
     path('profile-update/', profileupdate, name="profileupdate"),
     
     path('send_invite/<str:pk>/', send_invite, name="send_invite"),
+    path('delete_messages/<str:pk>/', delete_messages, name="delete_messages")
     
     
 ]

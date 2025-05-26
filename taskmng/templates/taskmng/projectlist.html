@@ -46,7 +46,21 @@
             </div>
             <button class="btn bg-secondary fw-bold dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#updateFeed" aria-expanded="True" aria-controls="updateFeed">Update Feeds(Inbox)</button>
             <div class="container rounded col-md-9" id="updateFeed" style="background-color:#2CBCBF">
-                <p>tin</p>
+                <ul class="list-group list-group ">
+                    {% for notification in notifications%}
+                    <li class="list-group-item">
+                        <div class="d-flex">
+                            <h1 class="fs-5 me-auto"> From:@{{notification.sender.username}}</h1>
+                            <button class="btn btn-outline-danger"><a href="{% url 'delete_messages' notification.id %}" class="link-underline link-underline-opacity-0" style="color:black">delete</a></button>
+                        </div>
+                        <p>{{notification}}</p>
+                        <div class="d-flex">
+                            <small class="me-auto">{{notification.created|timesince}}</small>
+                            <button class="btn btn-outline-info">Accept invite</button>
+                        </div>
+                    </li>
+                    {% endfor%}
+                </ul>
             </div>
         <div>
     </div>
