@@ -93,6 +93,7 @@ class Messages(models.Model):
     sender=models.ForeignKey(User,related_name="sent_message" ,on_delete=models.CASCADE,null=True)
     receiver= models.ForeignKey(User,related_name="received_message" ,on_delete=models.CASCADE, null=True)
     body=models.TextField()
+    invitation=models.ForeignKey(Invitation, on_delete=models.CASCADE, null=True, blank=True, related_name="messages")
     updated=models.DateTimeField(auto_now= True)
     created=models.DateTimeField(auto_now_add= True)
     

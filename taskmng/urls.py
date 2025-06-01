@@ -21,7 +21,8 @@ urlpatterns=[
     path('profile-update/', profileupdate, name="profileupdate"),
     
     path('send_invite/<str:pk>/', send_invite, name="send_invite"),
-    path('delete_messages/<str:pk>/', delete_messages, name="delete_messages")
+    path('delete_messages/<str:pk>/', delete_messages, name="delete_messages"),
+    path('accept_invite/<str:token>/', accept_invite, name="accept_invite")
     
     
 ]

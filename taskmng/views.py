@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .permissions import  project_admin_required
 from django.core.mail import send_mail
 from django.conf import settings
+from django.urls import reverse
 
 
 def loginpage(request):
@@ -59,7 +60,7 @@ def registerpage(request):
         
 
 @login_required(login_url="login")
-@project_admin_required
+
 def homepage(request,project_id):
     project=Project.objects.get(pk=project_id)
     tasks=project.tasks.all()
@@ -82,6 +83,10 @@ def projectpage(request):
     invitations=Invitation.objects.filter(recipient=request.user)
     notifications=Messages.objects.filter(receiver=request.user)
     
+    accepted_project=Invitation.objects.filter(recipient=request.user, status='accepted')
+    
+    inv_projects=[invite.project for invite in accepted_project]
+    
     if request.method == 'POST':
         form=ProjectForm(request.POST)
         if form.is_valid():
@@ -98,7 +103,7 @@ def projectpage(request):
     else:
         form=ProjectForm()
         
-    context={'projects':projects, 'form':form, 'invitations':invitations, 'notifications':notifications}
+    context={'projects':projects, 'form':form, 'invitations':invitations, 'notifications':notifications, 'inv_projects':inv_projects}
     return render(request, 'taskmng/projectlist.html', context)
 
 @login_required(login_url="login")
@@ -197,7 +202,7 @@ def passwordchange(request):
     
     context={'form':form}
     return render(request, 'taskmng/profiletabs/password.html', context)
-
+# @project_admin_required
 def send_invite(request,pk):
     projects=Project.objects.get(id=pk)
     
@@ -213,30 +218,32 @@ def send_invite(request,pk):
             messages.error(request, "The user with that email does not exist")
             return redirect('projects')
             
-        Invitation.objects.create(
+        invitation=Invitation.objects.create(
             project=projects,
             sender=request.user,
             recipient=recipient
             
         )
-       
+        invite_url=request.build_absolute_uri(reverse('accept_invite', args=[Invitation.token]))
         subject='Invitation to a project'
-        message=f'Dear {recipient.username} , this is to invite you to the {projects} project.'
+        message=f'Dear {recipient.username} , this is to invite you to the {projects} project.To join the project follow the link {invite_url}'
         recipient_list=[recipient.email]
+        
         
         
         send_mail(subject, message, 'progmartin2@gmail.com', recipient_list)
         Messages.objects.create(
             sender=request.user,
             receiver=recipient,
-            body=message
+            body=message,
+            invitation=invitation
             
         )
-        
+        messages.success(request, "Invitation sent successfully")
         return redirect('projects')
         
-def accept_invite(request):
-    invitation=Invitation.objects.get(recipient=request.user)
+def accept_invite(request, token):
+    invitation=Invitation.objects.get(recipient=request.user, token=token)
     
     if invitation.status == 'pending':
         ProjectMember.objects.create(

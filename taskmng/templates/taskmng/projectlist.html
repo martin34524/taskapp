@@ -27,6 +27,22 @@
                         </div>
                     </div>
                     {%endfor%}
+                    <h1 class="fs-5">Invited projects</h1>
+                    {% for inv_project in inv_projects %}
+                    <div class="col-md-3 rounded m-2">
+                        <div class="card" style="width:18rem; background-color:#e6b157">
+                            <h1 class="rounded fs-3 container-fluid">
+                                <i class="fa-solid fa-diagram-project"></i>
+                                <a class="card-link link-underline link-underline-opacity-0 text-capitalize" href="{%url 'home' inv_project.id%}" style="color:black">{{inv_project.projectname}}</a>
+                                <button class="btn ms-auto"><a class="link-underline link-underline-opacity-0 fw-bold" style="color:white" href="{% url 'deleteproject' inv_project.id%}">delete</a></button>
+                            </h1>
+                            <div class="card-body" style="background-color:#b1b2b5">
+                                <p>{{inv_project.description}}</p>
+                            </div>
+                            <small>Created  {{inv_project.created|timesince}}</small>
+                        </div>
+                    </div>
+                    {%endfor%}
                 </div>
                 <div class="container-fluid">
                     <button class="btn dropdown-toggle" data-bs-toggle="collapse"  data-bs-target="#projectcreation" aria-controls="projectcreation" aria-expanded="true" type="button"> Add Projects</button>
@@ -54,9 +70,14 @@
                             <button class="btn btn-outline-danger"><a href="{% url 'delete_messages' notification.id %}" class="link-underline link-underline-opacity-0" style="color:black">delete</a></button>
                         </div>
                         <p>{{notification}}</p>
+                        {{notification.invitation}}
                         <div class="d-flex">
                             <small class="me-auto">{{notification.created|timesince}}</small>
-                            <button class="btn btn-outline-info">Accept invite</button>
+                            {%if notification.invitation%}                          
+                            <button class="btn btn-outline-info"><a href="{% url 'accept_invite' notification.invitation.token%}">Accept invite</a></button>
+                            {% endif%}
+                           
+                                                  
                         </div>
                     </li>
                     {% endfor%}
